@@ -1,11 +1,15 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-
+const {setupDB} = require('./config/database-confifg')
 
 const setupAndStartServer = async() => {
     const {PORT} = require('./config/server-config')
     const app = express()
+    
+    // Database connectivity
+    setupDB();
+
     // Middlewares
     app.use(cors())
     app.use(bodyParser.json())
