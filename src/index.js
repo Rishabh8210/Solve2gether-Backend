@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const {setupDB} = require('./config/database-confifg');
-const {PORT} = require('./config/server-config');
+const {setupDB} = require('./configs/database-confifg');
+const {PORT} = require('./configs/server-config');
 const ApiV1Routes = require('./routes/index');
 const setupAndStartServer = async() => {
     const app = express()
@@ -16,6 +16,8 @@ const setupAndStartServer = async() => {
     app.use(bodyParser.urlencoded({extended:true}))
     
     app.use('/api',ApiV1Routes)
+
+    
     // running at PORT
     app.listen(PORT, async() => {
         console.log(`Server is running at PORT ${PORT}`);
