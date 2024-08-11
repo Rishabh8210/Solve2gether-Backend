@@ -1,5 +1,4 @@
-const User = require('./user-model');
-
 module.exports = {
-    User
+    User: require('./user-model'),
+    FriendRequest: require('./friendRequest-model')
 }
