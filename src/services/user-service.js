@@ -11,8 +11,12 @@ class UserService {
             const newUser = await this.userRepository.create(userData);
             return newUser;
         } catch (error) {
-            if(error.errorResponse.code == 11000){
-                throw new DuplicateError(error.errorResponse)
+            console.log("Something went wrong inside service layer");
+            if(error.message === 'User validation failed'){
+                throw error;
+            }
+            if(error.name === 'MongoServerError: E11000'){
+                throw error;
             }
             throw error
         }

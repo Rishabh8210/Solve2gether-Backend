@@ -1,5 +1,6 @@
-const { ClientError } = require('../utils/index')
-const { StatusCodes } = require('http-status-codes')
+const { ClientError, DuplicateError } = require('../utils/index')
+const { StatusCodes } = require('http-status-codes');
+const ValidationError = require('../utils/validation-error');
 class CRUDRepository {
     constructor(model){
         this.model = model;
@@ -10,6 +11,12 @@ class CRUDRepository {
             return response;
         }catch(error){
             console.log("Something went wrong inside CRUD Repository");
+            if(error._message == 'User validation failed'){
+                throw new ValidationError(error);
+            }
+            if(error.errorResponse.code === 11000){
+                throw new DuplicateError(error.errorResponse);
+            }
             throw error
         }
     }

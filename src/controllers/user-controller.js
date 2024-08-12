@@ -1,6 +1,6 @@
 const { UserService } = require('../services/index');
 const { StatusCodes } = require('http-status-codes');
-const {ClientError} = require('../utils/index');
+
 
 class UserController{
     constructor(){
@@ -36,6 +36,7 @@ class UserController{
                 err: {}
             })
         } catch (error) {
+            console.log(error)
             return res.status(error.statusCode).json({
                 data: {},
                 sucess: false,
@@ -56,6 +57,7 @@ class UserController{
                 err: {}
             })
         } catch (error) {
+            console.log(error)
             return res.status(error.statusCode).json({
                 data: {},
                 message: error.message,
