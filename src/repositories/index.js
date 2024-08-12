@@ -1,3 +1,6 @@
+const CRUDRepository = require('./crud-repository')
+const UserRepository = require("./user-repository")
 module.exports = {
-    UserRepository: require("./user-repository")
+    CRUDRepository,
+    UserRepository,
 }
