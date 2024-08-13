@@ -18,7 +18,12 @@ class UserService {
             if(error.name === 'MongoServerError: E11000'){
                 throw error;
             }
-            throw error
+            throw new AppError(
+                'ServerError',
+                'Something went wrong, Please try again',
+                'Logical issue found',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            )
         }
     }
     update = async(id, updateData) => {
@@ -27,6 +32,12 @@ class UserService {
             return userUpdate;
         } catch (error) {
             console.log("Something went wrrong inside service layer");
+            if(error.message === 'User validation failed'){
+                throw error;
+            }
+            if(error.name === 'MongoServerError: E11000'){
+                throw error;
+            }
             throw new AppError(
                 'ServerError',
                 'Something went wrong, Please try again',
@@ -41,9 +52,34 @@ class UserService {
             return user;
         } catch (error) {
             console.log("Something went wrong in the service layer");
-            throw error;
+            if(error.name == 'AttributeNotFound'){
+                throw error
+            }
+            throw new AppError(
+                'ServerError',
+                'Something went wrong, Please try again',
+                'Logical issue found',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            )
         }
-    }   
+    }
+    deleteUserByUsername = async(username) => {
+        try {
+            const user = await this.userRepository.deleteUserByUsername(username);
+            return user;
+        } catch (error) {
+            console.log("Something went wrong in the service layer");
+            if(error.name == 'AttributeNotFound'){
+                throw error
+            }
+            throw new AppError(
+                'ServerError',
+                'Something went wrong, Please try again',
+                'Logical issue found',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            )
+        }
+    }
 }
 
 module.exports = UserService;

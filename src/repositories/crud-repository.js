@@ -26,6 +26,12 @@ class CRUDRepository {
             return updatedUser;
         } catch (error) {
             console.log("Something went wrong inside CRUD Repository");
+            if(error._message == 'User validation failed'){
+                throw new ValidationError(error);
+            }
+            if(error.errorResponse.code === 11000){
+                throw new DuplicateError(error.errorResponse);
+            }
             throw error
         }
     }
@@ -41,6 +47,23 @@ class CRUDRepository {
                 )
             }
             return user;
+        } catch (error) {
+            console.log("Something went wrong inside CRUD Repository");
+            throw error
+        }
+    }
+    deleteUserByUsername = async(username) => {
+        try {
+            const response = await this.model.deleteOne({username});
+            if(!response.deletedCound == 0){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'Invalid username, Please verify it',
+                    'Please check the username, as there is no record of the username',
+                    StatusCodes.NOT_FOUND
+                )
+            }
+            return response;
         } catch (error) {
             console.log("Something went wrong inside CRUD Repository");
             throw error

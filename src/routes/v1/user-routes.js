@@ -7,4 +7,5 @@ const userController = new UserController()
 
 router.get('/', isAuthenticated,userController.getUserByUsername);
 router.patch('/:username', isAuthenticated, userController.update);
+router.delete('/', isAuthenticated, userController.deleteUserByUsername);
 module.exports = router;
