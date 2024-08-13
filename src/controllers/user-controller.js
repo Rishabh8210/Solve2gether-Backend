@@ -1,5 +1,6 @@
 const { UserService } = require('../services/index');
 const { StatusCodes } = require('http-status-codes');
+const ClientError = require('../utils/client-error');
 
 
 class UserController{
@@ -27,8 +28,16 @@ class UserController{
     update = async(req, res) => {
         try {
             const { username } = req.params;
-            const user = await this.userService.getUserByUsername(username);
-            const updateUser = await this.userService.update(user._id, req.body);
+            const existingUser = await this.userService.getUserByUsername(username);
+            if(existingUser._id != req.user.id){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'User is not authorished',
+                    'User is not authorisher, please check your username and try again',
+                    StatusCodes.UNAUTHORIZED
+                )
+            }
+            const updateUser = await this.userService.update(existingUser._id, req.body);
             return res.status(StatusCodes.OK).json({
                 data: updateUser,
                 message: 'User updated successfully',
@@ -48,7 +57,14 @@ class UserController{
     getUserByUsername = async (req, res) => {
         try {
             const { username } = req.query; 
-            console.log(username)
+            if(req.user.username != username){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'User is not authorished',
+                    'User is not authorisher, please check your username and try again',
+                    StatusCodes.UNAUTHORIZED
+                )
+            }
             const user = await this.userService.getUserByUsername(username);
             return res.status(StatusCodes.OK).json({
                 data: user,

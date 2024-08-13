@@ -1,4 +1,5 @@
 const {StatusCodes} = require('http-status-codes');
+const { validateJWTToken } = require('../utils/validateToken');
 const validateUserAuthSignup = (req, res, next) => {
     const {name, email, password, username} = req.body;
     if(!name || !email || !password || !username){
@@ -25,7 +26,33 @@ const validateUserAuthSignin = (req, res, next) => {
     next();
 }
 
+const isAuthenticated = async(req, res, next) => {
+    try {
+        const token = req.headers['authorization'].split(' ')[1];
+        if(!token){
+            return res.status(StatusCodes.UNAUTHORIZED).json({
+                data: {},
+                message: 'No token provided',
+                status: false,
+                err: "Token not found in the request"
+            })
+        }
+        const userData = validateJWTToken(token);
+        req.user = userData;
+        next();
+    } catch (error) {
+        console.log(error)
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+            data: {}, 
+            message: error.message,
+            status: false,
+            err: error
+        })
+    }
+}
+
 module.exports = {
     validateUserAuthSignup,
-    validateUserAuthSignin
+    validateUserAuthSignin,
+    isAuthenticated
 }
