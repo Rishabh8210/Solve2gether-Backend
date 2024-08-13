@@ -24,6 +24,25 @@ class AuthController {
             })
         }
     }
+
+    signin = async(req, res) => {
+        try {
+            const response = await this.authService.signin(req.body);
+            return res.status(StatusCodes.OK).json({
+                data: response,
+                status: true,
+                message: 'User successfully signed in',
+                err: {}
+            }) 
+        } catch (error) {
+            return res.status(error.statusCode).json({
+                data: {},
+                status: true,
+                message: error.message,
+                err: error
+            }) 
+        }
+    }
 }
 
 module.exports = AuthController

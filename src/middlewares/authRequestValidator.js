@@ -12,7 +12,20 @@ const validateUserAuthSignup = (req, res, next) => {
     next();
 }
 
+const validateUserAuthSignin = (req, res, next) => {
+    const { username, password } = req.body;
+    if(!username || !password){
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            data: {},
+            message: 'All mandatory fields are required.',
+            status: false,
+            err: "mandatory fields are missing in the signin request"
+        })
+    }
+    next();
+}
 
 module.exports = {
-    validateUserAuthSignup
+    validateUserAuthSignup,
+    validateUserAuthSignin
 }

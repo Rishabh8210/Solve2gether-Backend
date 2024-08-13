@@ -1,4 +1,5 @@
-const { validateUserAuthSignup } = require('./authRequestValidator')
+const { validateUserAuthSignup, validateUserAuthSignin } = require('./authRequestValidator')
 module.exports = {
-    validateUserAuthSignup
+    validateUserAuthSignup,
+    validateUserAuthSignin
 }

@@ -8,3 +8,4 @@
         - `PORT = 3000`
         - `DBURL = "mongodb+srv://<Username>:<password>@<clustername.clusterid>.mongodb.net/"`
         - `SALT = 10`
+        - `JWT_SECRET_KEY = <YOUR_SECRET_KEY>`
