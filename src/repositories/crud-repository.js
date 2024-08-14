@@ -10,8 +10,8 @@ class CRUDRepository {
             const response = await this.model.create(data);
             return response;
         }catch(error){
-            console.log("Something went wrong inside CRUD Repository");
-            if(error._message == 'User validation failed'){
+            console.log("Something went wrong inside CRUD Repository", error._message);
+            if(error._message.indexOf('validation failed') != -1){
                 throw new ValidationError(error);
             }
             if(error.errorResponse.code === 11000){

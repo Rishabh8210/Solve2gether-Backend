@@ -17,4 +17,5 @@ router.post('/signin', validateUserAuthSignin, authController.signin);
 
 // Friends and all routes
 router.get('/search', isAuthenticated, friendRequestController.getAllByName);
+router.post('/:username', isAuthenticated, friendRequestController.sendFriendRequest);
 module.exports = router;

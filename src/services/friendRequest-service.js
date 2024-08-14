@@ -7,6 +7,24 @@ class FriendRequestService {
         this.userRepository = new UserRepository();
     }
 
+    sendFriendRequest = async(friendRequestData) => {
+        try {
+            const response = await this.friendRequestRepository.create(friendRequestData);
+            return response
+        } catch (error) {
+            console.log("Something went wrong inside service layerssss", error.message);
+            if(error.message === 'FriendRequest validation failed'){
+                throw error;
+            }
+            throw new AppError(
+                'ServerError',
+                'Something went wrong, Please try again',
+                'Logical issue found',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            )
+        }
+    }
+
     getAllFriendsByUsername = async(username) => {
         try {
             const user = this.userRepository.getUserByUsername(username);
