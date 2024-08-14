@@ -73,7 +73,7 @@ class UserController {
                 err: {}
             })
         } catch (error) {
-            // console.log(error)
+            console.log(error)
             return res.status(error.statusCode).json({
                 data: {},
                 message: error.message,

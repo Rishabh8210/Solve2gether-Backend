@@ -69,5 +69,23 @@ class CRUDRepository {
             throw error
         }
     }
+    getAllByName = async(name) => {
+        try {
+            const pattern = '^'+name;
+            const users = await this.model.find({ name: { $regex: pattern } });
+            if(!users){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'Invalid name, Please verify it',
+                    'Please check the name, as there is no record of the name',
+                    StatusCodes.NOT_FOUND
+                )
+            }
+            return users;
+        } catch (error) {
+            console.log("Something went wrong inside CRUD Repository");
+            throw error
+        }
+    }
 }
 module.exports = CRUDRepository
