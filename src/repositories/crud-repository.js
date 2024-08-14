@@ -22,11 +22,15 @@ class CRUDRepository {
     }
     update = async(id, updateData) => {
         try {
-            const updatedUser = await this.model.findOneAndUpdate({_id: id}, updateData, {new: true})
+            const updatedUser = await this.model.findOneAndUpdate(
+                {_id: id}, 
+                {
+                    $addToSet: { friends: updateData }
+                }, {new: true})
             return updatedUser;
         } catch (error) {
             console.log("Something went wrong inside CRUD Repository");
-            if(error._message == 'User validation failed'){
+            if(error._message.indexOf('validation failed') != -1){
                 throw new ValidationError(error);
             }
             if(error.errorResponse.code === 11000){
@@ -69,6 +73,44 @@ class CRUDRepository {
             throw error
         }
     }
+
+    getUserById = async(id) => {
+        try {
+            const user = await this.model.findById(id);
+            console.log(user)
+            if(!user){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'Invalid id, Please verify it',
+                    'Please check the id, as there is no record of the id',
+                    StatusCodes.NOT_FOUND
+                )
+            }
+            return user;
+        } catch (error) {
+            console.log("Something went wrong inside CRUD Repository");
+            throw error
+        }
+    }
+
+    deleteUserById = async(id) => {
+        try {
+            const response = await this.model.deleteOne({_id: id});
+            if(!response.deletedCound == 0){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'Invalid id, Please verify it',
+                    'Please check the id, as there is no record of the id',
+                    StatusCodes.NOT_FOUND
+                )
+            }
+            return response;
+        } catch (error) {
+            console.log("Something went wrong inside CRUD Repository");
+            throw error
+        }
+    }
+
     getAllByName = async(name) => {
         try {
             const pattern = '^'+name;

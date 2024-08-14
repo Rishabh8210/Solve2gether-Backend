@@ -20,6 +20,7 @@ class FriendRequestController {
                     StatusCodes.UNAUTHORIZED
                 )
             }
+            console.log(isUserExist)
             const friendRequestData = {
                 senderUsername: req.user.id,
                 receiverUsername: isUserExist._id,
@@ -33,6 +34,38 @@ class FriendRequestController {
                 err: {}
             })
         }catch(error){
+            console.log(error);
+            return res.status(error.statusCode).json({
+                data: {},
+                message: error.message,
+                status: false,
+                err: error
+            })
+        }
+    }
+
+    acceptFriendRequest = async(req, res) => {
+        try {
+            const { username } = req.params;
+            const isUserExist = await this.userService.getUserByUsername(username);
+            if(!isUserExist){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'User not found',
+                    'User data not found. Please verify your username and try again.',
+                    StatusCodes.UNAUTHORIZED
+                )
+            }
+            
+            const response = await this.friendRequestService.acceptFriendRequest(req.user.id, isUserExist._id);
+            console.log(response)
+            return res.status(StatusCodes.OK).json({
+                data: response,
+                message: 'Friend request accepted successfully',
+                status: true,
+                err :{}
+            })
+        } catch (error) {
             console.log(error);
             return res.status(error.statusCode).json({
                 data: {},
