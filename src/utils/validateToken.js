@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET_KEY } = require('../configs/server-config');
-const ClientError = require('./client-error');
+const ClientError = require('./errors/client-error');
 const { StatusCodes } = require('http-status-codes');
 
 function validateJWTToken(token){

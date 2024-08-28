@@ -1,6 +1,6 @@
 const { ClientError, DuplicateError } = require('../utils/index')
 const { StatusCodes } = require('http-status-codes');
-const ValidationError = require('../utils/validation-error');
+const ValidationError = require('../utils/errors/validation-error');
 class CRUDRepository {
     constructor(model){
         this.model = model;
