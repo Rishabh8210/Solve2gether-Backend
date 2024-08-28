@@ -1,6 +1,6 @@
 const {FriendRequestService, UserService} = require('../services/index');
 const {StatusCodes} = require('http-status-codes');
-const ClientError = require('../utils/client-error')
+const ClientError = require('../utils/errors/client-error')
 
 class FriendRequestController {
     constructor(){

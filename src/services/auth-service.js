@@ -1,10 +1,10 @@
 const { StatusCodes } = require("http-status-codes");
 const { UserRepository } = require("../repositories");
-const AppError = require("../utils/app-error");
+const AppError = require("../utils/errors/app-error");
 const {SALT, JWT_SECRET_KEY} = require('../configs/server-config');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
-const ClientError = require("../utils/client-error");
+const ClientError = require("../utils/errors/client-error");
 class AuthService {
     constructor(){
         this.userRepository = new UserRepository();

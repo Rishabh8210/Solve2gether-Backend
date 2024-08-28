@@ -1,6 +1,7 @@
 const {FriendRequestRepository, UserRepository} = require('../repositories/index');
 const {StatusCodes} = require('http-status-codes')
-const { AppError, ClientError } = require('../utils');
+const AppError = require('../utils/errors/app-error');
+const ClientError = require('../utils/errors/client-error')
 class FriendRequestService {
     constructor(){
         this.friendRequestRepository = new FriendRequestRepository();

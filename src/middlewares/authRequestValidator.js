@@ -1,5 +1,5 @@
 const {StatusCodes} = require('http-status-codes');
-const { validateJWTToken } = require('../utils/validateToken');
+const  validateJWTToken  = require('../utils/errors/validation-error');
 const validateUserAuthSignup = (req, res, next) => {
     const {name, email, password, username} = req.body;
     if(!name || !email || !password || !username){
