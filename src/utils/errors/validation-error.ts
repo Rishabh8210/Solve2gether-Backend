@@ -1,10 +1,14 @@
-const { StatusCodes } = require('http-status-codes');
-const {AppError} = require('../index.js');
+import { StatusCodes } from "http-status-codes";
+import {AppError} from './index.js';
 
+export interface IValidationError{
+    errors: {[key:string]: any},
+    _message: string
+}
 class ValidationError extends AppError{
-    constructor(error){
+    constructor(error: IValidationError){
         let keys = Object.keys(error.errors);
-        let explanations = [];
+        let explanations:string[] = [];
         keys.forEach(key => {
             explanations.push(error.errors[key].properties.message)
         })
@@ -15,4 +19,4 @@ class ValidationError extends AppError{
     }
 }
 
-module.exports = ValidationError
+export default ValidationError

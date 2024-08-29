@@ -1,12 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const {setupDB} = require('./configs/database-confifg');
-const {PORT} = require('./configs/server-config');
-const ApiV1Routes = require('./routes/index');
+import express from 'express'
+import cors from 'cors';
+import bodyParser from 'body-parser'
+import setupDB from './configs/database-confifg'
+import {PORT}  from './configs/server-config'
+import ApiV1Routes  from './routes/index'
 const setupAndStartServer = async() => {
     const app = express()
-    
+
     // Database connectivity
     setupDB();
 

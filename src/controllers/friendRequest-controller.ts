@@ -1,14 +1,19 @@
-const {FriendRequestService, UserService} = require('../services/index');
-const {StatusCodes} = require('http-status-codes');
-const ClientError = require('../utils/errors/client-error')
+import { FriendRequestService, UserService } from '../services/index';
+import { StatusCodes } from 'http-status-codes';
+import { ClientError } from '../utils/errors/index'
+import { Request, Response, NextFunction } from 'express'
+import { CustomRequest } from '../middlewares/authRequestValidator';
+
 
 class FriendRequestController {
+    friendRequestService: FriendRequestService;
+    userService: UserService
     constructor(){
         this.friendRequestService = new FriendRequestService()
         this.userService = new UserService();
     }
 
-    sendFriendRequest = async(req, res) => {
+    sendFriendRequest = async(req:CustomRequest, res:Response) => {
         try{
             const {username} = req.params;
             const isUserExist = await this.userService.getUserByUsername(username);
@@ -16,13 +21,13 @@ class FriendRequestController {
                 throw new ClientError(
                     'AttributeNotFound',
                     'User not found',
-                    'User data not found. Please verify your username and try again.',
+                    ['User data not found. Please verify your username and try again.'],
                     StatusCodes.UNAUTHORIZED
                 )
             }
             console.log(isUserExist)
             const friendRequestData = {
-                senderUsername: req.user.id,
+                senderUsername: req.headers["user"].id,
                 receiverUsername: isUserExist._id,
             }
     
@@ -33,7 +38,7 @@ class FriendRequestController {
                 status: true,
                 err: {}
             })
-        }catch(error){
+        }catch(error:any){
             console.log(error);
             return res.status(error.statusCode).json({
                 data: {},
@@ -44,7 +49,7 @@ class FriendRequestController {
         }
     }
 
-    acceptFriendRequest = async(req, res) => {
+    acceptFriendRequest = async(req:CustomRequest, res: Response) => {
         try {
             const { username } = req.params;
             const isUserExist = await this.userService.getUserByUsername(username);
@@ -52,12 +57,12 @@ class FriendRequestController {
                 throw new ClientError(
                     'AttributeNotFound',
                     'User not found',
-                    'User data not found. Please verify your username and try again.',
+                    ['User data not found. Please verify your username and try again.'],
                     StatusCodes.UNAUTHORIZED
                 )
             }
-            
-            const response = await this.friendRequestService.acceptFriendRequest(req.user.id, isUserExist._id);
+            const userId = req.headers["user"].id;
+            const response = await this.friendRequestService.acceptFriendRequest(userId, isUserExist._id);
             console.log(response)
             return res.status(StatusCodes.OK).json({
                 data: response,
@@ -65,7 +70,7 @@ class FriendRequestController {
                 status: true,
                 err :{}
             })
-        } catch (error) {
+        } catch (error:any) {
             console.log(error);
             return res.status(error.statusCode).json({
                 data: {},
@@ -76,9 +81,9 @@ class FriendRequestController {
         }
     }
 
-    getAllByName = async(req, res) => {
+    getAllByName = async(req:Request, res:Response) => {
         try {
-            const { name } = req.query;
+            let name  = req.query.name as string;
             const users = await this.friendRequestService.getAllByName(name);
             return res.status(StatusCodes.OK).json({
                 data: users,
@@ -86,7 +91,7 @@ class FriendRequestController {
                 status: true,
                 err: {}
             })
-        } catch (error) {
+        } catch (error:any) {
             console.log(error)
             return res.status(error.statusCode).json({
                 data: {},
@@ -98,4 +103,4 @@ class FriendRequestController {
     }
 }
 
-module.exports = FriendRequestController
+export default FriendRequestController
