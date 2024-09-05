@@ -43,7 +43,7 @@ class CRUDRepository<T> {
     }
     getUserByUsername = async(username: string) => { 
         try {
-            const user = await (this.model as any).findOne({username});
+            const user = await (this.model as any).findOne({username}).populate('friends');
             if(!user){
                 throw new ClientError(
                     'AttributeNotFound',
@@ -79,7 +79,7 @@ class CRUDRepository<T> {
     getUserById = async(id: Schema.Types.ObjectId) => {
         try {
             const user = await (this.model as any).findById(id);
-            console.log(user)
+            // console.log(user)
             if(!user){
                 throw new ClientError(
                     'AttributeNotFound',

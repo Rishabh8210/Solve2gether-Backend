@@ -80,7 +80,37 @@ class FriendRequestController {
             })
         }
     }
-
+    removeFriend = async(req:CustomRequest, res:Response) => {
+        try {
+            const friendUsername = req.query.username as string;
+            console.log(friendUsername);
+            const isFriendExist = await this.userService.getUserByUsername(friendUsername);
+            if(!isFriendExist){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'User not found',
+                    ['User is deleted his/her account'],
+                    StatusCodes.NOT_FOUND
+                )
+            }
+            const userId = req.headers['user'].id;
+            const response = await this.friendRequestService.removeFriend(userId, isFriendExist._id);
+            return res.status(StatusCodes.OK).json({
+                data: response,
+                message: 'Successfully friend is removed',
+                success: true,
+                err: {}
+            })
+        } catch (error:any) {
+            console.log(error);
+            return res.status(error.statusCode).json({
+                data: {},
+                success: false,
+                message: error.message,
+                err: error
+            })
+        }
+    }
     getAllByName = async(req:Request, res:Response) => {
         try {
             let name  = req.query.name as string;

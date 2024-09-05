@@ -89,6 +89,50 @@ class FriendRequestService {
         }
     }
 
+    removeFriend = async(userId:Schema.Types.ObjectId, friendId: Schema.Types.ObjectId) => {
+        try {
+            const isFriendExist = await this.userRepository.getUserById(friendId);
+            if(!isFriendExist){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'User not exists',
+                    ['User is deleted his/her account'],
+                    StatusCodes.NOT_FOUND
+                );
+            }
+            const user = await this.userRepository.getUserById(userId);
+            const userFriends = user.friends;
+            const filterUserFriends = userFriends.filter((friend: any) => {
+                if(!(friend._id.equals(friendId)))
+                    return friend
+            });
+            user.friends = filterUserFriends;
+            
+            const friendFriends = isFriendExist.friends;
+            const filterFriendFriends = friendFriends.filter((friend: any) => {
+                if(!(friend._id.equals(userId)))
+                    return friend
+            });
+            isFriendExist.friends = filterFriendFriends;
+            console.log("Dataa", user, isFriendExist);
+
+            await user.save();
+            await isFriendExist.save();
+            return user
+        } catch (error:any) {
+            console.log("Something went wrong inside friendRequest service layer", error);
+            if(error.name == 'AttributeNotFound'){
+                throw error
+            }
+            throw new AppError(
+                'ServerError',
+                'Something went wrong, Please try again',
+                ['Logical issue found'],
+                StatusCodes.INTERNAL_SERVER_ERROR
+            )
+        }
+    }
+    
     getAllFriendsByUsername = async(username:string) => {
         try {
             const user = this.userRepository.getUserByUsername(username);

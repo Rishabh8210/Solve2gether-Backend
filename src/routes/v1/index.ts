@@ -20,5 +20,6 @@ router.post('/signin', validateUserAuthSignin, authController.signin);
 router.get('/search', isAuthenticated, friendRequestController.getAllByName);
 router.post('/:username', isAuthenticated, friendRequestController.sendFriendRequest);
 router.patch('/:username', isAuthenticated, friendRequestController.acceptFriendRequest);
+router.patch('/admin/friends', isAuthenticated, friendRequestController.removeFriend);
 
 export default router;
