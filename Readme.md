@@ -12,4 +12,4 @@
 
 ### Features
     - User signup/signin feature completed
-    - Send friend request, Accept friend request feature completed
+    - Send friend request, Accept friend request, Remove friend feature completed

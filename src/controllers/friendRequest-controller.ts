@@ -52,6 +52,7 @@ class FriendRequestController {
     acceptFriendRequest = async(req:CustomRequest, res: Response) => {
         try {
             const { username } = req.params;
+            console.log(username);
             const isUserExist = await this.userService.getUserByUsername(username);
             if(!isUserExist){
                 throw new ClientError(
