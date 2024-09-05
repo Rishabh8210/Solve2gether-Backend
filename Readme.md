@@ -16,3 +16,13 @@
     - Added uploading question feature (required file is in `csv format` and `column` name must be `title` and `questionLink`)
 
 ![image](https://github.com/user-attachments/assets/f5bfa0cc-a17a-4b05-a51c-6761e9d553ea)
+
+    - And setup this things in frontend side   
+    ```
+        const formData = new FormData();
+        formData.append('file', <uploaded_data_variable_name>);
+        
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        } 
+    ```
