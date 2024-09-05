@@ -9,3 +9,7 @@
         - `DBURL = "mongodb+srv://<Username>:<password>@<clustername.clusterid>.mongodb.net/"`
         - `SALT = 10`
         - `JWT_SECRET_KEY = <YOUR_SECRET_KEY>`
+
+### Features
+    - User signup/signin feature completed
+    - Send friend request, Accept friend request feature completed
