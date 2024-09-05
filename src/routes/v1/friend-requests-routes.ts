@@ -1,6 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {FriendRequestController} = require('../../controllers/index')
+import {FriendRequestController} from '../../controllers/index'
 const friendRequestController = new FriendRequestController();
 
 router.get('/search')
+
+export default router

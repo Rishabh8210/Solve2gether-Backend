@@ -1,7 +1,22 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const { SALT } = require('../configs/server-config');
-const userSchema = mongoose.Schema({
+import { Document, model, Schema } from "mongoose";
+import bcrypt from 'bcrypt'
+import { SALT } from '../configs/server-config';
+
+export interface IUser extends Document{
+    name: string, 
+    email: string,
+    password: string,
+    username: string,
+    friends: Schema.Types.ObjectId[],
+    streak: number,
+    isVerified: boolean,
+    profilePic: string,
+    leetcode: string,
+    codechef: string,
+    codeforces: string
+}
+
+const userSchema = new Schema<IUser>({
     name: {
         type: String,
         required: [true, 'A name is required'],
@@ -17,8 +32,6 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: [true, 'A password is required'],
-        minlength: [6, 'Password must be at least 6 characters long'],
-        maxlength: [30, 'Password cannot be more than 30 characters long']
     },
     username: {
         type: String, 
@@ -28,7 +41,7 @@ const userSchema = mongoose.Schema({
         minlength: [6, 'Username must be at least 6 characters long'],
     },
     friends: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     }],
     streak: {
@@ -55,11 +68,11 @@ const userSchema = mongoose.Schema({
     timestamps: true
 })
 userSchema.pre('save', async function(next) {
-    if (this.isModified('password') || this.isNew) {
+    if ((this.isModified('password') || this.isNew) && SALT) {
         this.password = await bcrypt.hash(this.password, parseInt(SALT));
     }
     next();
 });
 
-const User = mongoose.model('User', userSchema);
-module.exports = User
+const User = model<IUser>('User', userSchema);
+export default User

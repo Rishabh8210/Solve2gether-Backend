@@ -1,8 +1,9 @@
-const express = require('express')
-const UserRoutes = require('./user-routes')
+import express from 'express'
+import UserRoutes from './user-routes'
+
 const router = express.Router();
-const { AuthController, FriendRequestController } = require('../../controllers/index')
-const { validateUserAuthSignup, validateUserAuthSignin, isAuthenticated } = require('../../middlewares/index')
+import { AuthController, FriendRequestController } from '../../controllers/index'
+import { validateUserAuthSignup, validateUserAuthSignin, isAuthenticated } from '../../middlewares/index'
 
 const authController = new AuthController()
 const friendRequestController = new FriendRequestController();
@@ -19,4 +20,6 @@ router.post('/signin', validateUserAuthSignin, authController.signin);
 router.get('/search', isAuthenticated, friendRequestController.getAllByName);
 router.post('/:username', isAuthenticated, friendRequestController.sendFriendRequest);
 router.patch('/:username', isAuthenticated, friendRequestController.acceptFriendRequest);
-module.exports = router;
+router.patch('/admin/friends', isAuthenticated, friendRequestController.removeFriend);
+
+export default router;

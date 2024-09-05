@@ -1,13 +1,15 @@
-const { UserService } = require('../services/index');
-const { StatusCodes } = require('http-status-codes');
-const ClientError = require('../utils/errors/client-error');
-
+import { UserService } from '../services/index';
+import { StatusCodes } from 'http-status-codes';
+import { ClientError } from '../utils/errors/index';
+import { Request, Response } from 'express';
+import { CustomRequest } from '../middlewares/authRequestValidator';
 
 class UserController {
+    userService: UserService
     constructor() {
         this.userService = new UserService();
     }
-    create = async (req, res) => {
+    create = async (req:Request, res:Response) => {
         try {
             const user = await this.userService.create(req.body);
             return res.status(StatusCodes.CREATED).json({
@@ -16,7 +18,7 @@ class UserController {
                 status: true,
                 err: {}
             })
-        } catch (error) {
+        } catch (error:any) {
             return res.status(error.statusCode).json({
                 data: {},
                 message: error.message,
@@ -25,15 +27,15 @@ class UserController {
             })
         }
     }
-    update = async (req, res) => {
+    update = async (req:CustomRequest, res:Response) => {
         try {
             const { username } = req.params;
             const existingUser = await this.userService.getUserByUsername(username);
-            if (existingUser._id != req.user.id) {
+            if (existingUser._id != req.headers['user'].id) {
                 throw new ClientError(
                     'AttributeNotFound',
                     'User is not authorished',
-                    'User is not authorisher, please check your username and try again',
+                    ['User is not authorisher, please check your username and try again'],
                     StatusCodes.UNAUTHORIZED
                 )
             }
@@ -44,7 +46,7 @@ class UserController {
                 status: true,
                 err: {}
             })
-        } catch (error) {
+        } catch (error:any) {
             console.log(error)
             return res.status(error.statusCode).json({
                 data: {},
@@ -54,15 +56,15 @@ class UserController {
             })
         }
     }
-    getUserByUsername = async (req, res) => {
+    getUserByUsername = async (req:CustomRequest, res:Response) => {
         try {
-            const { username } = req.query;
+            const username = req.query.username as string;
             const existingUser = await this.userService.getUserByUsername(username);
-            if (existingUser._id != req.user.id) {
+            if (!existingUser || existingUser._id != req.headers['user'].id) {
                 throw new ClientError(
                     'AttributeNotFound',
                     'User is not authorished',
-                    'User is not authorisher, please check your username and try again',
+                    ['User is not authorisher, please check your username and try again'],
                     StatusCodes.UNAUTHORIZED
                 )
             }
@@ -72,7 +74,7 @@ class UserController {
                 status: true,
                 err: {}
             })
-        } catch (error) {
+        } catch (error:any) {
             console.log(error)
             return res.status(error.statusCode).json({
                 data: {},
@@ -82,15 +84,15 @@ class UserController {
             })
         }
     }
-    deleteUserByUsername = async (req, res) => {
+    deleteUserByUsername = async (req:CustomRequest, res:Response) => {
         try {
-            const { username } = req.query;
+            const username = req.query.username as string;
             const existingUser = await this.userService.getUserByUsername(username);
-            if (existingUser._id != req.user.id) {
+            if (existingUser._id != req.headers["user"].id) {
                 throw new ClientError(
                     'AttributeNotFound',
                     'User is not authorished',
-                    'User is not authorisher, please check your username and try again',
+                    ['User is not authorisher, please check your username and try again'],
                     StatusCodes.UNAUTHORIZED
                 )
             }
@@ -101,7 +103,7 @@ class UserController {
                 status: true,
                 err: {}
             })
-        } catch (error) {
+        } catch (error:any) {
             // console.log(error)
             return res.status(error.statusCode).json({
                 data: {},
@@ -113,4 +115,4 @@ class UserController {
     }
 }
 
-module.exports = UserController
+export default UserController

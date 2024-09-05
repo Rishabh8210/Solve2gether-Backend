@@ -1,12 +1,13 @@
-const {StatusCodes} = require('http-status-codes');
-const { AuthService } = require('../services/index');
-
+import {StatusCodes} from 'http-status-codes';
+import { AuthService } from '../services/index';
+import {Request, Response, NextFunction} from 'express'
 class AuthController {
+    authService: AuthService
     constructor(){
         this.authService = new AuthService();
     }
 
-    signup = async(req, res) => {
+    signup = async(req:Request, res:Response) => {
         try {
             const user = await this.authService.signup(req.body);
             return res.status(StatusCodes.CREATED).json({
@@ -15,7 +16,7 @@ class AuthController {
                 message: 'User successfully signed up',
                 err: {}
             })
-        } catch (error) {
+        } catch (error:any) {
             return res.status(error.statusCode).json({
                 data: {},
                 status: false,
@@ -25,7 +26,7 @@ class AuthController {
         }
     }
 
-    signin = async(req, res) => {
+    signin = async(req:Request, res:Response) => {
         try {
             const response = await this.authService.signin(req.body);
             return res.status(StatusCodes.OK).json({
@@ -34,7 +35,7 @@ class AuthController {
                 message: 'User successfully signed in',
                 err: {}
             }) 
-        } catch (error) {
+        } catch (error:any) {
             return res.status(error.statusCode).json({
                 data: {},
                 status: true,
@@ -45,4 +46,4 @@ class AuthController {
     }
 }
 
-module.exports = AuthController
+export default AuthController
