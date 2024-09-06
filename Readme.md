@@ -17,7 +17,7 @@
 
 ![image](https://github.com/user-attachments/assets/f5bfa0cc-a17a-4b05-a51c-6761e9d553ea)
 
-    - And setup this things in frontend side   
+    - And setup this things in frontend side
     ```
         const formData = new FormData();
         formData.append('file', <uploaded_data_variable_name>);
@@ -26,3 +26,4 @@
             'Content-Type': 'multipart/form-data',
         } 
     ```
+- [Or you can clone this file too / Frontend side code](https://github.com/Rishabh8210/Csv-parser-client.git)s
