@@ -7,6 +7,25 @@ class QuestionController {
     constructor(){
         this.questionController = new QuestionService();
     }
+    getAllQues = async(req: Request, res: Response) => {
+        try {
+            const filter = req.query;
+            const response = await this.questionController.getAllQuestion(filter);
+            return res.status(StatusCodes.OK).json({
+                data: response,
+                success: true, 
+                message: 'Successfully fetched data as per filer',
+                err: {}
+            })
+        } catch (error: any) {
+            return res.status(error.statusCode).json({
+                data: {},
+                success: false, 
+                message: error.message,
+                err: error
+            })
+        }
+    }
     parseData = async(req:Request, res:Response) => {
         try {
             const path = req.file?.path;
