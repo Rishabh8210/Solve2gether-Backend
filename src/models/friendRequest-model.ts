@@ -13,7 +13,7 @@ const friendRequestSchema = new Schema<IFriendRequest>({
         required: true
     },
     status: {
-        type: String,
+        type: Schema.Types.String,
         enum: ['Pending', 'Accepted'],
         default: 'Pending'
     }

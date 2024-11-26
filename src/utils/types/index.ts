@@ -28,3 +28,10 @@ export interface IQuestion {
     topics: string[] | string;
     difficulty: 'Easy' | 'Medium' |'Hard' | 'Undefined'
 }
+
+export interface IContest {
+    name: string
+    numOfQues: Number
+    questions: Schema.Types.ObjectId[]
+    duration: Number
+}
