@@ -1,11 +1,5 @@
 import { Document, model, Schema } from "mongoose";
-
-export interface IQuestion {
-    title: string;
-    questionLink: string;
-    topics: string[];
-    difficulty: 'Easy' | 'Medium' |'Hard'
-}
+import { IQuestion } from '../utils/types'
 
 const questionSchema = new Schema<IQuestion>({
     title: {
@@ -18,7 +12,7 @@ const questionSchema = new Schema<IQuestion>({
     },
     topics: {
         type: [Schema.Types.String],
-        required: true
+        default: 'Undefined'
     },
     difficulty: {
         type: Schema.Types.String,

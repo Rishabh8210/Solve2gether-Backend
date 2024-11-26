@@ -2,19 +2,7 @@ import { Document, model, Schema } from "mongoose";
 import bcrypt from 'bcrypt'
 import { SALT } from '../configs/server-config';
 
-export interface IUser extends Document{
-    name: string, 
-    email: string,
-    password: string,
-    username: string,
-    friends: Schema.Types.ObjectId[],
-    streak: number,
-    isVerified: boolean,
-    profilePic: string,
-    leetcode: string,
-    codechef: string,
-    codeforces: string
-}
+import { IUser } from '../utils/types'
 
 const userSchema = new Schema<IUser>({
     name: {
