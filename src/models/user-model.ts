@@ -2,7 +2,19 @@ import { Document, model, Schema } from "mongoose";
 import bcrypt from 'bcrypt'
 import { SALT } from '../configs/server-config';
 
-import { IUser } from '../utils/types'
+export interface IUser extends Document{
+    name: string, 
+    email: string,
+    password: string,
+    username: string,
+    friends: Schema.Types.ObjectId[],
+    streak: number,
+    isVerified: boolean,
+    profilePic?: string,
+    leetcode?: string,
+    codechef?: string,
+    codeforces?: string
+}
 
 const userSchema = new Schema<IUser>({
     name: {
@@ -41,23 +53,59 @@ const userSchema = new Schema<IUser>({
         default: false
     },
     profilePic: {
-        type: String
+        type: String,
+        validate: {
+            validator: (v: string) => {
+                return (
+                    !v || /^https?:\/\/(.*)$/.test(v)
+                );
+            },
+            message: "Profile picture must be a valid URL",
+        },
     },
     leetcode: {
-        type: String
+        type: String,
+        validate: {
+            validator: (v: string) => {
+                return (
+                    !v || /^https?:\/\/(.*)$/.test(v)
+                );
+            },
+            message: "LeetCode profile must be a valid URL",
+        },
     },
     codechef: {
-        type: String
+        type: String,
+        validate: {
+            validator: (v: string) => {
+                return (
+                    !v || /^https?:\/\/(.*)$/.test(v) 
+                );
+            },
+            message: "CodeChef profile must be a valid URL",
+        },
     },
     codeforces: {
-        type: String
+        type: String,
+        validate: {
+            validator: (v: string) => {
+                return (
+                    !v || /^https?:\/\/(.*)$/.test(v) 
+                );
+            },
+            message: "Codeforces profile must be a valid URL",
+        },
     }
 }, {
     timestamps: true
 })
 userSchema.pre('save', async function(next) {
     if ((this.isModified('password') || this.isNew) && SALT) {
-        this.password = await bcrypt.hash(this.password, parseInt(SALT));
+        try {
+            this.password = await bcrypt.hash(this.password, parseInt(SALT));
+        } catch (error) {
+            console.log(error);
+        }
     }
     next();
 });

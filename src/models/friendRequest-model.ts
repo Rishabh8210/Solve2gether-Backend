@@ -1,5 +1,11 @@
 import {Document, model, Schema} from 'mongoose'
-import { IFriendRequest } from '../utils/types';
+// import { IFriendRequest } from '../utils/types';
+
+export interface IFriendRequest extends Document {
+    senderUsername: Schema.Types.ObjectId,
+    receiverUsername: Schema.Types.ObjectId,
+    status: string
+}
 
 const friendRequestSchema = new Schema<IFriendRequest>({
     senderUsername: {
@@ -13,7 +19,7 @@ const friendRequestSchema = new Schema<IFriendRequest>({
         required: true
     },
     status: {
-        type: Schema.Types.String,
+        type: String,
         enum: ['Pending', 'Accepted'],
         default: 'Pending'
     }

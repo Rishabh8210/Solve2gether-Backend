@@ -1,19 +1,25 @@
 import { Schema, model } from "mongoose";
-import { IContest } from '../utils/types'
-import Questions from "./questions-model";
+// import { IContest } from '../utils/types'
+
+export interface IContest {
+    name: string
+    numOfQues: Number
+    questions: Schema.Types.ObjectId[]
+    duration: Number,
+}
 
 const contestSchema = new Schema<IContest>({
     name: {
-        type: Schema.Types.String,
+        type: String,
         required: [true, 'Name is required'],
     },
     questions: {
         type: [Schema.Types.ObjectId],
-        ref: Questions,
+        ref: 'Questions',
         required: [true, 'Question for contest is required']
     },
     duration: {
-        type: Schema.Types.Number,
+        type: Number,
         required: [true, 'Contest duration is required']
     }
 },{

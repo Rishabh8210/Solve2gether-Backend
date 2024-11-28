@@ -22,16 +22,23 @@ export interface IFriendRequest extends Document {
     updatedAt: Date,
 }
 
-export interface IQuestion {
+export interface IQuestion extends Document {
     title: string;
     questionLink: string;
     topics: string[] | string;
     difficulty: 'Easy' | 'Medium' |'Hard' | 'Undefined'
 }
 
-export interface IContest {
+export interface IContest extends Document {
     name: string
     numOfQues: Number
     questions: Schema.Types.ObjectId[]
-    duration: Number
+    duration: Number,
+    createdBy: Schema.Types.ObjectId
+}
+
+export interface ISubmission extends Document {
+    submittedBy: Schema.Types.ObjectId,
+    contestId: Schema.Types.ObjectId,
+    solvedQues: Schema.Types.ObjectId[],
 }

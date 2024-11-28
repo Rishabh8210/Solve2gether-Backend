@@ -3,26 +3,26 @@ import { IQuestion } from '../utils/types'
 
 const questionSchema = new Schema<IQuestion>({
     title: {
-        type: Schema.Types.String,
+        type: String,
         required: [true, 'Title is required']
     },
     questionLink: {
-        type: Schema.Types.String,
+        type: String,
         required: [true, 'Question link is required']
     },
     topics: {
-        type: [Schema.Types.String],
-        default: 'Undefined'
+        type: [String],
+        default: ['Undefined']
     },
     difficulty: {
-        type: Schema.Types.String,
-        enum: ['Easy', 'Medium', 'Hard'],
+        type: String,
+        enum: ['Easy', 'Medium', 'Hard', 'Undefined'],
         required: true
     }
 }, {
     timestamps: true
 })
 
-const Questions = model<IQuestion>('Questions', questionSchema);
+const Question = model<IQuestion>('questionSchema', questionSchema);
 
-export default Questions
+export default Question
