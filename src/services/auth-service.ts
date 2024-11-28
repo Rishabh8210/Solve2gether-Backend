@@ -1,14 +1,14 @@
 import { StatusCodes } from "http-status-codes";
-import { UserRepository } from "../repositories/index";
+import { UserService } from './index'
 import {AppError, ClientError} from "../utils/errors/index"
 import {SALT, JWT_SECRET_KEY} from '../configs/server-config';
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt';
 import { IUser } from "../models/user-model";
 class AuthService {
-    userRepository: UserRepository
+    userService: UserService
     constructor(){
-        this.userRepository = new UserRepository();
+        this.userService = new UserService();
     }
     #generateJWTToken = (userData: Partial<IUser>) => {
         try {
@@ -32,7 +32,7 @@ class AuthService {
     }
     signup = async(userData: Partial<IUser>) => {
         try {
-            const newUser = await this.userRepository.create(userData);
+            const newUser = await this.userService.create(userData);
             return newUser;
         } catch (error:any) {
             console.log("Something went wrong inside service layer");
@@ -62,7 +62,7 @@ class AuthService {
                     StatusCodes.BAD_REQUEST
                 ) 
             }
-            const user = await this.userRepository.getUserByUsername(username);
+            const user = await this.userService.getUserByUsername(username);
             const isPasswordCorrect = this.#validatePassword(password, user.password);
             if(!isPasswordCorrect){
                 throw new ClientError(

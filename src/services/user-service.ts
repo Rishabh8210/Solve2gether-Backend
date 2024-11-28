@@ -12,7 +12,7 @@ class UserService {
     create = async(userData: Partial<IUser>) => {
         try {
             const newUser = await this.userRepository.create(userData);
-            const response: Partial<IUser> = {
+            const response = {
                 _id: newUser._id,
                 name: newUser.name,
                 email: newUser.email,
