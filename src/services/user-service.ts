@@ -12,7 +12,16 @@ class UserService {
     create = async(userData: Partial<IUser>) => {
         try {
             const newUser = await this.userRepository.create(userData);
-            return newUser;
+            const response: Partial<IUser> = {
+                _id: newUser._id,
+                name: newUser.name,
+                email: newUser.email,
+                username: newUser.username,
+                friends: newUser.friends,
+                streak: newUser.streak,
+                isVerified: newUser.isVerified
+            }
+            return response;
         } catch (error:any) {
             console.log("Something went wrong inside service layer");
             if(error.message === 'User validation failed'){

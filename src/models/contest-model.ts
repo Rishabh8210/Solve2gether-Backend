@@ -26,5 +26,5 @@ const contestSchema = new Schema<IContest>({
     timestamps: true
 })
 
-const Contest = model<IContest>('contestSchema', contestSchema);
+const Contest = model<IContest>('Contest', contestSchema);
 export default Contest

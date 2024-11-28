@@ -25,5 +25,5 @@ const submissionSchema = new Schema<ISubmission> ({
     timestamps: true
 })
 
-const Submission = model<ISubmission>('submissionSchema', submissionSchema);
+const Submission = model<ISubmission>('Submission', submissionSchema);
 export default Submission

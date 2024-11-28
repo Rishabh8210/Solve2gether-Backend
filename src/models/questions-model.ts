@@ -1,5 +1,12 @@
 import { Document, model, Schema } from "mongoose";
-import { IQuestion } from '../utils/types'
+
+export interface IQuestion extends Document {
+    title: string;
+    questionLink: string;
+    topics: string[] | string;
+    difficulty: 'Easy' | 'Medium' |'Hard' | 'Undefined'
+}
+
 
 const questionSchema = new Schema<IQuestion>({
     title: {
@@ -23,6 +30,6 @@ const questionSchema = new Schema<IQuestion>({
     timestamps: true
 })
 
-const Question = model<IQuestion>('questionSchema', questionSchema);
+const Question = model<IQuestion>('Question', questionSchema);
 
 export default Question
