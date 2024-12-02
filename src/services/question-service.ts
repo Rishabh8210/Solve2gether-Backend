@@ -18,9 +18,10 @@ class QuestionService {
             throw new AppError()
         }
     }
+
     parseCSVData = async (path: string) => {
         try {
-            let questionSet: any[] = [];
+            let questionSet: Partial<IQuestion>[] = [];
             await new Promise((resolve, reject) => {
                 fs.createReadStream(path)
                     .pipe(csv())
