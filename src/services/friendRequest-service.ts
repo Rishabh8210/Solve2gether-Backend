@@ -133,7 +133,7 @@ class FriendRequestService {
         }
     }
     
-    getAllFriendsByUsername = async(username:string) => {
+    getAllUserFriendsByUsername = async(username:string) => {
         try {
             const user = this.userRepository.getUserByUsername(username);
             return user;
@@ -151,7 +151,7 @@ class FriendRequestService {
         }
     }
 
-    getAllByName = async(name:string) => {
+    getAllUserByName = async(name:string) => {
         try {
             console.log(name)
             const users = await this.userRepository.getAllByName(name);

@@ -26,4 +26,4 @@
             'Content-Type': 'multipart/form-data',
         } 
     ```
-- [Or you can clone this file too / Frontend side code](https://github.com/Rishabh8210/Csv-parser-client.git)s
+- [Or you can clone this file too / Frontend side code](https://github.com/Rishabh8210/Csv-parser-client.git)

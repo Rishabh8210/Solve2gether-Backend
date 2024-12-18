@@ -13,7 +13,6 @@ class UserService {
         try {
             const newUser = await this.userRepository.create(userData);
             const response = {
-                _id: newUser._id,
                 name: newUser.name,
                 email: newUser.email,
                 username: newUser.username,
