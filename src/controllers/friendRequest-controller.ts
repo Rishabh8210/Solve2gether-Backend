@@ -115,7 +115,7 @@ class FriendRequestController {
     getAllByName = async(req:Request, res:Response) => {
         try {
             const name  = req.query.name as string;
-            const users = await this.friendRequestService.getAllByName(name);
+            const users = await this.friendRequestService.getAllUserByName(name);
             return res.status(StatusCodes.OK).json({
                 data: users,
                 message: 'Successfully fetched the users',
